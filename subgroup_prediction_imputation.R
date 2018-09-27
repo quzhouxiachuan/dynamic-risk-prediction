@@ -101,17 +101,17 @@ Forms <- list("ln(SBP)" = "value", "ln(SBP)" = list(fixed = ~ 1, random = ~ 1,
                                                     indFixed = 2, indRandom = 2, name = "slope"))
 multJMFit2 <- update(multJMFit1, Formulas = Forms)
 
-aucJM(multJMFit2, newdata=ND1, Tstart=16, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
+aucJM(multJMFit2, newdata=ND, Tstart=16, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
 #0.9196 , 548 
 #make Tstart time greater than the smallest repeated measurement time 
-aucJM(multJMFit2, newdata=ND1, Tstart=20, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
+aucJM(multJMFit2, newdata=ND, Tstart=20, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
 # 0.9062,480
-aucJM(multJMFit2, newdata=ND1, Tstart=25, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
+aucJM(multJMFit2, newdata=ND, Tstart=25, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
 #0.7297, 258
 
 ##aucJM for simple cox regression model 
-aucJM(coxfit1, newdata= ND1.id, idVar = "ID_d", respVar = "cvd", timeVar = "Time", evTimeVar = "ttocvd", Thoriz= 26, Tstart=16)
+aucJM(coxfit1, newdata= ND.id, idVar = "ID_d", respVar = "cvd", timeVar = "Time", evTimeVar = "ttocvd", Thoriz= 26, Tstart=16)
 #0.6241
-aucJM(coxfit1, newdata= ND1.id, idVar = "ID_d", respVar = "cvd", timeVar = "Time", evTimeVar = "ttocvd", Thoriz= 30, Tstart=20)
+aucJM(coxfit1, newdata= ND.id, idVar = "ID_d", respVar = "cvd", timeVar = "Time", evTimeVar = "ttocvd", Thoriz= 30, Tstart=20)
 #0.6693 (133)
-aucJM(coxfit1, newdata= ND1.id, idVar = "ID_d", respVar = "cvd", timeVar = "Time", evTimeVar = "ttocvd", Thoriz= 35, Tstart=25)
+aucJM(coxfit1, newdata= ND.id, idVar = "ID_d", respVar = "cvd", timeVar = "Time", evTimeVar = "ttocvd", Thoriz= 35, Tstart=25)
