@@ -109,7 +109,8 @@ aucJM(multJMFit2, newdata=ND, Tstart=20, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
 aucJM(multJMFit2, newdata=ND, Tstart=25, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
 #0.7297, 258
 
-
+Forms2 <- list( "ln(SBP)" = list(fixed = ~ 1, random = ~ 1,
+          indFixed = 2, indRandom = 2, name = "slope"))
 multJMFit3 <- update(multJMFit1, Formulas = Forms2)
 aucJM(multJMFit3, newdata=ND, Tstart=16, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
 # 0.9213 , 548 
