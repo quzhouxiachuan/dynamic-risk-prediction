@@ -43,7 +43,8 @@ D1 = D2[-2]
 colnames(D1)[length(D1)] = 'ttocvd'
 D1 = D1[D1$Time < D1$ttocvd | D1$Time == D1$ttocvd,]
 D1.id = D1[!duplicated(D1$ID_d),] #sample size 1506 
-
+D.id$SBP_RXHYP = ln(D.id$SBP)*D.id$RXHYP
+D.id$SBP_RXHYP_N = ln(D.id$SBP)*D.id$RXHYP_N
 ###############set up training set and testing set#####################
 #####training set allows NA values, while testing set does not ########
 set.seed(101) # Set Seed so that same sample can be reproduced in future also
@@ -53,6 +54,8 @@ D.id <- D1.id[sample, ]
 D =  D1[D1$ID_d %in% D.id$ID_d,]
 ND.id  <- D1.id[-sample, ]
 ND = D1[D1$ID_d %in% ND.id$ID_d,]
+ND.id$SBP_RXHYP = ln(ND.id$SBP)*ND.id$RXHYP
+ND.id$SBP_RXHYP_N = ln(ND.id$SBP)*ND.id$RXHYP_N
 
 library(SciViews)
 multMixedFit1 <- mvglmer(list(ln(SBP) ~ Time  + (Time | ID_d),
@@ -66,6 +69,8 @@ multMixedFit1 <- mvglmer(list(ln(SBP) ~ Time  + (Time | ID_d),
 coxfit1 = coxph(Surv(ttocvd,cvd) ~ ln(base_age)+ (ln(base_age))^2 +ln(TOTCHL)+ ln(base_age): ln(TOTCHL) + ln(HDLCHL) 
                 + ln(base_age):ln(HDLCHL) + ln(SBP):RXHYP + ln(SBP):RXHYP_N + SMOKER + ln(base_age):SMOKER + HXDIAB , data=D.id,model = TRUE)
 
+coxfit2 = coxph(Surv(ttocvd,cvd) ~ ln(base_age)+ (ln(base_age))^2 +ln(TOTCHL)+ ln(base_age): ln(TOTCHL) + ln(HDLCHL) 
+                + ln(base_age):ln(HDLCHL) + SBP_RXHYP + SBP_RXHYP_N + SMOKER + ln(base_age):SMOKER + HXDIAB , data=D.id,model = TRUE)
 
 multJMFit1 <- mvJointModelBayes(multMixedFit1, coxfit1, timeVar = "Time")
 
@@ -83,13 +88,12 @@ aucJM(multJMFit1, newdata=ND, Tstart=25, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
 #0.7337, 258
 
 ##aucJM for simple cox regression model 
-aucJM(coxfit1, newdata= ND.id, idVar = "ID_d", respVar = "cvd", timeVar = "Time", evTimeVar = "ttocvd", Thoriz= 26, Tstart=16)
-#0.6241
-aucJM(coxfit1, newdata= ND.id, idVar = "ID_d", respVar = "cvd", timeVar = "Time", evTimeVar = "ttocvd", Thoriz= 30, Tstart=20)
-#0.6693 (133)
-aucJM(coxfit1, newdata= ND.id, idVar = "ID_d", respVar = "cvd", timeVar = "Time", evTimeVar = "ttocvd", Thoriz= 35, Tstart=25)
-# 0.7316 (81)
-
+aucJM(coxfit2, newdata= ND.id, idVar = "ID_d", respVar = "cvd", timeVar = "Time", evTimeVar = "ttocvd", Thoriz= 26, Tstart=16)
+#0.92 (548)
+aucJM(coxfit2, newdata= ND.id, idVar = "ID_d", respVar = "cvd", timeVar = "Time", evTimeVar = "ttocvd", Thoriz= 30, Tstart=20)
+#0.9005 (480)
+aucJM(coxfit2, newdata= ND.id, idVar = "ID_d", respVar = "cvd", timeVar = "Time", evTimeVar = "ttocvd", Thoriz= 35, Tstart=25)
+# 0.7155 (258)
 
 #extra form 
 #dForm <- list(fixed = ~ 1, random = ~ 1, indFixed = 2, indRandom = 2)
