@@ -109,6 +109,17 @@ aucJM(multJMFit2, newdata=ND, Tstart=20, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
 aucJM(multJMFit2, newdata=ND, Tstart=25, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
 #0.7297, 258
 
+
+multJMFit3 <- update(multJMFit1, Formulas = Forms2)
+aucJM(multJMFit3, newdata=ND, Tstart=16, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
+# 0.9213 , 548 
+aucJM(multJMFit3, newdata=ND, Tstart=20, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
+# 0.9071 (480 subjects still at risk)
+aucJM(multJMFit3, newdata=ND, Tstart=25, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
+# 0.7212 (258 subjects still at risk)
+
+
+
 ##aucJM for simple cox regression model 
 aucJM(coxfit1, newdata= ND.id, idVar = "ID_d", respVar = "cvd", timeVar = "Time", evTimeVar = "ttocvd", Thoriz= 26, Tstart=16)
 #0.6241
