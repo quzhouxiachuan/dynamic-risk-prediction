@@ -1,6 +1,8 @@
 library(JMbayes)
 library(plyr)
 library(mice)
+library(SciViews)
+
 #setwd('R:/PrevMed/Faculty/Zhao/Yu/data')
 setwd('/Volumes/fsmresfiles/PrevMed/Faculty/Zhao/Yu/data')
 load('./LRPP_updated.RData')
@@ -26,10 +28,10 @@ D1$RXHYP_N = 1- D1$RXHYP
 BaseSBP = D1[D1$Time == 0,c('ID_d','SBP')]
 colnames(BaseSBP)[2] = 'baselineSBP'
 kk = merge(D1,BaseSBP,by ='ID_d',all.left = T)
-kk$change = (kk$SBP.x - kk$baselineSBP)/kk$baselineSBP
+kk$change = (kk$SBP - kk$baselineSBP)/kk$baselineSBP
 kk = kk[kk$change>0.18,]
 D1.id = kk[!duplicated(kk$ID_d),] 
-D1 = D1[D1$ID_d %in% D1.id$ID_D, ]
+D1 = D1[D1$ID_d %in% D1.id$ID_d, ]
 D1.id = D1[!duplicated(D1$ID_d),] 
 #D1.id = D1[!duplicated(D1$ID_d),] #sample size 1506 
 #delete rows that have repeated measurements time later than survival time 
@@ -39,8 +41,7 @@ D1 = D2[-2]
 colnames(D1)[length(D1)] = 'ttocvd'
 D1 = D1[D1$Time < D1$ttocvd | D1$Time == D1$ttocvd,]
 D1.id = D1[!duplicated(D1$ID_d),] #sample size 1506 
-D.id$SBP_RXHYP = ln(D.id$SBP)*D.id$RXHYP
-D.id$SBP_RXHYP_N = ln(D.id$SBP)*D.id$RXHYP_N
+
 ###############set up training set and testing set#####################
 #####training set allows NA values, while testing set does not ########
 set.seed(101) # Set Seed so that same sample can be reproduced in future also
@@ -50,11 +51,12 @@ D.id <- D1.id[sample, ]
 D =  D1[D1$ID_d %in% D.id$ID_d,]
 ND.id  <- D1.id[-sample, ]
 ND = D1[D1$ID_d %in% ND.id$ID_d,]
+D.id$SBP_RXHYP = ln(D.id$SBP)*D.id$RXHYP
+D.id$SBP_RXHYP_N = ln(D.id$SBP)*D.id$RXHYP_N
 ND.id$SBP_RXHYP = ln(ND.id$SBP)*ND.id$RXHYP
 ND.id$SBP_RXHYP_N = ln(ND.id$SBP)*ND.id$RXHYP_N
 
 
-library(SciViews)
 multMixedFit1 <- mvglmer(list(ln(SBP) ~ Time  + (Time | ID_d),
                               ln(TOTCHL) ~ Time  + (1 | ID_d)), data = D,
                          families = list(gaussian, gaussian))
