@@ -31,7 +31,13 @@ D_sbp2 = merge(D_sbp, SBP_min, by='ID_d', all.x= T )
 D1 = D_sbp2
 colnames(D1)[(length(D1)-1):length(D1)] = c('SBP_max', 'SBP_min')
 D1$change = (D1$SBP_max - D1$SBP_min)/D1$SBP_min
-D1 = D1[D1$change > 0.3, ]
+D3 = D1
+#find patients that have change>0.3
+D3 = D3[D3$change > 0.3, ]
+D1.id = D3[!duplicated(D3$ID_d),]
+#keep all the records for the remained patients 
+D1 = D1[D1$ID_d %in%D1.id,]
+
 
 
 
