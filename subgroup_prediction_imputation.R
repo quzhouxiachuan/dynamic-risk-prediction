@@ -38,7 +38,7 @@ D3 = D1
 D3 = D3[D3$change > 0.3, ]
 D1.id = D3[!duplicated(D3$ID_d),]
 #keep all the records for the remained patients 
-D1 = D1[D1$ID_d %in%D1.id,]
+D1 = D1[D1$ID_d %in%D1.id$ID_d,]
 
 
 
