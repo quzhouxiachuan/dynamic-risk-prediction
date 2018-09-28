@@ -1,9 +1,8 @@
-## reference: https://www.framinghamheartstudy.org/fhs-risk-functions/cardiovascular-disease-10-year-risk/
 library(JMbayes)
 library(plyr)
 library(mice)
-setwd('R:/PrevMed/Faculty/Zhao/Yu/data')
-#setwd('/Volumes/fsmresfiles/PrevMed/Faculty/Zhao/Yu/data')
+#setwd('R:/PrevMed/Faculty/Zhao/Yu/data')
+setwd('/Volumes/fsmresfiles/PrevMed/Faculty/Zhao/Yu/data')
 load('./LRPP_updated.RData')
 D0$Time = D0$age-D0$base_age
 D1 = D0[D0$COHORT %in% c('FHS OFFSPRING', 'CARDIA', 'CHS',  'ARIC', 'MESA', 'JHS') & D0$ttocvd>0 & D0$male == 0 & D0$RACE == 'White', c("ID_d","ttocvd","Time" ,"cvd", "SBP",'HDLCHL','TOTCHL','HXDIAB','SMOKER','RXHYP','base_age', 'BMINOW')]#D1 = na.omit(D1)
@@ -23,22 +22,15 @@ Dk=cbind( D1[1], complete)
 D1 = Dk 
 D1$RXHYP_N = 1- D1$RXHYP
 
-### get the max of sbp and min of sbp and only remain those having changes over 0.3 percentage 
-SBP_max = ddply(D1, .(ID_d), summarize, max(SBP))
-SBP_min = ddply (D1, .(ID_d), summarize,min(SBP))
-D_sbp = merge (D1, SBP_max, by= 'ID_d' , all.x = T)
-D_sbp2 = merge(D_sbp, SBP_min, by='ID_d', all.x= T )
-D1 = D_sbp2
-colnames(D1)[(length(D1)-1):length(D1)] = c('SBP_max', 'SBP_min')
-D1$change = (D1$SBP_max - D1$SBP_min)/D1$SBP_min
-D3 = D1
-#find patients that have change>0.3
-D3 = D3[D3$change > 0.3, ]
-D1.id = D3[!duplicated(D3$ID_d),]
-#keep all the records for the remained patients 
-D1 = D1[D1$ID_d %in%D1.id,]
-
-
+### get the baseline value of sbp and only remain those having changes over 0.18 compared to baseline 
+BaseSBP = D1[D1$Time == 0,c('ID_d','SBP')]
+colnames(BaseSBP)[2] = 'baselineSBP'
+kk = merge(D1,BaseSBP,by ='ID_d',all.left = T)
+kk$change = (kk$SBP.x - kk$baselineSBP)/kk$baselineSBP
+kk = kk[kk$change>0.18,]
+D1.id = kk[!duplicated(kk$ID_d),] 
+D1 = D1[D1$ID_d %in% D1.id$ID_D, ]
+D1.id = D1[!duplicated(D1$ID_d),] 
 #D1.id = D1[!duplicated(D1$ID_d),] #sample size 1506 
 #delete rows that have repeated measurements time later than survival time 
 max = ddply(D1, "ID_d", summarize, max = max(ttocvd)) 
@@ -102,30 +94,3 @@ aucJM(coxfit2, newdata= ND.id, idVar = "ID_d", respVar = "cvd", timeVar = "Time"
 #0.6693 (133)
 aucJM(coxfit2, newdata= ND.id, idVar = "ID_d", respVar = "cvd", timeVar = "Time", evTimeVar = "ttocvd", Thoriz= 35, Tstart=25)
 # 0.7316 (81)
-
-
-#extra form 
-#dForm <- list(fixed = ~ 1, random = ~ 1, indFixed = 2, indRandom = 2)
-Forms <- list("ln(SBP)" = "value", "ln(SBP)" = list(fixed = ~ 1, random = ~ 1,
-                                                    indFixed = 2, indRandom = 2, name = "slope"))
-multJMFit2 <- update(multJMFit1, Formulas = Forms)
-
-aucJM(multJMFit2, newdata=ND, Tstart=16, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
-#
-#make Tstart time greater than the smallest repeated measurement time 
-aucJM(multJMFit2, newdata=ND, Tstart=20, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
-#0.6211
-aucJM(multJMFit2, newdata=ND, Tstart=25, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
-#0.6481
-
-#############extra form: only include the slope term 
-Forms2 <- list( "ln(SBP)" = list(fixed = ~ 1, random = ~ 1,
-                                                    indFixed = 2, indRandom = 2, name = "slope"))
-multJMFit3 <- update(multJMFit1, Formulas = Forms2)
-
-aucJM(multJMFit3, newdata=ND, Tstart=16, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
-#
-#make Tstart time greater than the smallest repeated measurement time 
-aucJM(multJMFit3, newdata=ND, Tstart=20, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
-#0.6211
-aucJM(multJMFit3, newdata=ND, Tstart=25, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
