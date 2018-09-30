@@ -88,20 +88,20 @@ multJMFit1 <- mvJointModelBayes(multMixedFit1, coxfit1, timeVar = "Time")
 ND.id = ND[!duplicated(ND$ID_d),]
 
 aucJM(multJMFit1, newdata=ND, Tstart=16, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
-#0.9187, 548
+# 0.8923, 542
 #make Tstart time greater than the smallest repeated measurement time 
 aucJM(multJMFit1, newdata=ND, Tstart=20, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
-#0.9059, 480
+#0.9004, 480
 aucJM(multJMFit1, newdata=ND, Tstart=25, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
-#0.7337, 258
+# 0.7386, 236
 
 ##aucJM for simple cox regression model 
 aucJM(coxfit2, newdata= ND.id, idVar = "ID_d", respVar = "cvd", timeVar = "Time", evTimeVar = "ttocvd", Thoriz= 26, Tstart=16)
-#0.92 (548)
+#0.8947 (542)
 aucJM(coxfit2, newdata= ND.id, idVar = "ID_d", respVar = "cvd", timeVar = "Time", evTimeVar = "ttocvd", Thoriz= 30, Tstart=20)
-#0.9005 (480)
+#0.8937 (480)
 aucJM(coxfit2, newdata= ND.id, idVar = "ID_d", respVar = "cvd", timeVar = "Time", evTimeVar = "ttocvd", Thoriz= 35, Tstart=25)
-# 0.7155 (258)
+# 0.7541 (236)
 
 #extra form 
 #dForm <- list(fixed = ~ 1, random = ~ 1, indFixed = 2, indRandom = 2)
@@ -110,22 +110,22 @@ Forms <- list("ln(SBP)" = "value", "ln(SBP)" = list(fixed = ~ 1, random = ~ 1,
 multJMFit2 <- update(multJMFit1, Formulas = Forms)
 
 aucJM(multJMFit2, newdata=ND, Tstart=16, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
-#0.9196 , 548 
+#0.8921 , 542 
 #make Tstart time greater than the smallest repeated measurement time 
 aucJM(multJMFit2, newdata=ND, Tstart=20, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
-# 0.9062,480
+# 0.8998,480
 aucJM(multJMFit2, newdata=ND, Tstart=25, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
-#0.7297, 258
+#0.7384, 236
 
 Forms2 <- list( "ln(SBP)" = list(fixed = ~ 1, random = ~ 1,
           indFixed = 2, indRandom = 2, name = "slope"))
 multJMFit3 <- update(multJMFit1, Formulas = Forms2)
 aucJM(multJMFit3, newdata=ND, Tstart=16, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
-# 0.9213 , 548 
+# 0.8901 , 542 
 aucJM(multJMFit3, newdata=ND, Tstart=20, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
-# 0.9071 (480 subjects still at risk)
+# 0.9005 (480 subjects still at risk)
 aucJM(multJMFit3, newdata=ND, Tstart=25, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
-# 0.7212 (258 subjects still at risk)
+# 0.7447 (236 subjects still at risk)
 
 
 
