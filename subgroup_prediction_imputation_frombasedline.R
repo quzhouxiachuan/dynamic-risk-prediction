@@ -97,4 +97,24 @@ aucJM(coxfit2, newdata= ND.id, idVar = "ID_d", respVar = "cvd", timeVar = "Time"
 aucJM(coxfit2, newdata= ND.id, idVar = "ID_d", respVar = "cvd", timeVar = "Time", evTimeVar = "ttocvd", Thoriz= 35, Tstart=25)
 #0.719 (229)
 
+Forms <- list("ln(SBP)" = "value", "ln(SBP)" = list(fixed = ~ 1, random = ~ 1,
+                                                    indFixed = 2, indRandom = 2, name = "slope"))
+multJMFit2 <- update(multJMFit1, Formulas = Forms)
 
+aucJM(multJMFit2, newdata=ND, Tstart=16, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
+#0.8953 , 660 
+#make Tstart time greater than the smallest repeated measurement time 
+aucJM(multJMFit2, newdata=ND, Tstart=20, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
+# 0.8954,574
+aucJM(multJMFit2, newdata=ND, Tstart=25, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
+#0.7827, 229
+
+Forms2 <- list( "ln(SBP)" = list(fixed = ~ 1, random = ~ 1,
+          indFixed = 2, indRandom = 2, name = "slope"))
+multJMFit3 <- update(multJMFit1, Formulas = Forms2)
+aucJM(multJMFit3, newdata=ND, Tstart=16, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
+# 0.8901 , 542 
+aucJM(multJMFit3, newdata=ND, Tstart=20, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
+# 0.9005 (480 subjects still at risk)
+aucJM(multJMFit3, newdata=ND, Tstart=25, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
+# 0.7447 (236 subjects still at risk)
