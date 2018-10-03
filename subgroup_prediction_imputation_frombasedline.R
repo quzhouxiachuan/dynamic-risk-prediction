@@ -79,7 +79,7 @@ multJMFit1 <- mvJointModelBayes(multMixedFit1, coxfit1, timeVar = "Time")
 
 ## testing model 
 #ND1 = na.omit(ND)
-ND.id = ND[!duplicated(ND$ID_d),]
+#ND.id = ND[!duplicated(ND$ID_d),]
 
 aucJM(multJMFit1, newdata=ND, Tstart=16, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
 #0.8944(660)
