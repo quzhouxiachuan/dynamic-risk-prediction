@@ -59,6 +59,8 @@ multMixedFit1 <- mvglmer(list(ln(SBP) ~ Time  + (Time | ID_d),
 coxfit1 = coxph(Surv(ttocvd,cvd) ~ ln(base_age)+ (ln(base_age))^2 +ln(TOTCHL)+ ln(base_age): ln(TOTCHL) + ln(HDLCHL) 
 + ln(base_age):ln(HDLCHL) + ln(SBP):RXHYP + ln(SBP):RXHYP_N + SMOKER + ln(base_age):SMOKER + HXDIAB , data=D.id,model = TRUE)
 
+coxfit2 = coxph(Surv(ttocvd,cvd) ~ ln(base_age)+ (ln(base_age))^2 +ln(TOTCHL)+ ln(base_age): ln(TOTCHL) + ln(HDLCHL) 
+                + ln(base_age):ln(HDLCHL) + SBP_RXHYP + SBP_RXHYP_N + SMOKER + ln(base_age):SMOKER + HXDIAB , data=D.id,model = TRUE)
 
 multJMFit1 <- mvJointModelBayes(multMixedFit1, coxfit1, timeVar = "Time")
 
