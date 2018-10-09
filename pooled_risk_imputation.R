@@ -78,7 +78,7 @@ aucJM(multJMFit1, newdata=ND, Tstart=25, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
 #0.7726  852
 
 ##aucJM for simple cox regression model 
-aucJM(coxfit1, newdata= ND.id, idVar = "ID_d", respVar = "cvd", timeVar = "Time", evTimeVar = "ttocvd", Thoriz= 26, Tstart=16)
+aucJM(coxfit1, newdata= ND.id, idVar = "ID_d", respVar = "cvd", timeVar = "Time", evTimeVar = "ttocvd", Thoriz= 26, Tstart=15)
 #0.8379
 aucJM(coxfit1, newdata= ND.id, idVar = "ID_d", respVar = "cvd", timeVar = "Time", evTimeVar = "ttocvd", Thoriz= 30, Tstart=20)
 #0.8587
