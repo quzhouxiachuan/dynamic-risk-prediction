@@ -18,7 +18,7 @@ D1 = rbind(D1, FHS)
 #imputed <- mice(D1, m=5, maxit = 5, method = 'pmm', seed = 500)
 #completedData <- complete(imputed,1)
 D1_ = D1[,2:12]
-imputed = mice(D1_)
+imputed = mice(D1_, seed=500)
 complete = complete(imputed, 1)
 Dk=cbind( D1[1], complete)
 D1 = Dk 
