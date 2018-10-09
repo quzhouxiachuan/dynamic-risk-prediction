@@ -87,7 +87,7 @@ multJMFit1 <- mvJointModelBayes(multMixedFit1, coxfit1, timeVar = "Time")
 #ND1 = na.omit(ND)
 #ND.id = ND[!duplicated(ND$ID_d),]
 
-aucJM(multJMFit1, newdata=ND, Tstart=16, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
+aucJM(multJMFit1, newdata=ND, Tstart=15, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
 # 0.8923, 542
 #make Tstart time greater than the smallest repeated measurement time 
 aucJM(multJMFit1, newdata=ND, Tstart=20, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
@@ -109,7 +109,7 @@ Forms <- list("ln(SBP)" = "value", "ln(SBP)" = list(fixed = ~ 1, random = ~ 1,
                                                     indFixed = 2, indRandom = 2, name = "slope"))
 multJMFit2 <- update(multJMFit1, Formulas = Forms)
 
-aucJM(multJMFit2, newdata=ND, Tstart=16, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
+aucJM(multJMFit2, newdata=ND, Tstart=15, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
 #0.8921 , 542 
 #make Tstart time greater than the smallest repeated measurement time 
 aucJM(multJMFit2, newdata=ND, Tstart=20, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
@@ -120,7 +120,7 @@ aucJM(multJMFit2, newdata=ND, Tstart=25, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
 Forms2 <- list( "ln(SBP)" = list(fixed = ~ 1, random = ~ 1,
           indFixed = 2, indRandom = 2, name = "slope"))
 multJMFit3 <- update(multJMFit1, Formulas = Forms2)
-aucJM(multJMFit3, newdata=ND, Tstart=16, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
+aucJM(multJMFit3, newdata=ND, Tstart=15, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
 # 0.8901 , 542 
 aucJM(multJMFit3, newdata=ND, Tstart=20, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
 # 0.9005 (480 subjects still at risk)
