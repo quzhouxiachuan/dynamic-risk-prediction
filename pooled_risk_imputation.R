@@ -69,7 +69,7 @@ multJMFit1 <- mvJointModelBayes(multMixedFit1, coxfit1, timeVar = "Time")
 #ND1 = na.omit(ND)
 #ND.id = ND[!duplicated(ND$ID_d),]
 
-aucJM(multJMFit1, newdata=ND, Tstart=16, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
+aucJM(multJMFit1, newdata=ND, Tstart=15, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
 #0.8219 2332
 #make Tstart time greater than the smallest repeated measurement time 
 aucJM(multJMFit1, newdata=ND, Tstart=20, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
@@ -92,7 +92,7 @@ Forms <- list("ln(SBP)" = "value", "ln(SBP)" = list(fixed = ~ 1, random = ~ 1,
 indFixed = 2, indRandom = 2, name = "slope"))
 multJMFit2 <- update(multJMFit1, Formulas = Forms)
 
-aucJM(multJMFit2, newdata=ND, Tstart=16, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
+aucJM(multJMFit2, newdata=ND, Tstart=15, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
 #0.8213 
 #make Tstart time greater than the smallest repeated measurement time 
 aucJM(multJMFit2, newdata=ND, Tstart=20, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
@@ -101,7 +101,7 @@ aucJM(multJMFit2, newdata=ND, Tstart=25, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
 #0.7716
 
 ##aucJM for simple cox regression model 
-aucJM(MultJMFit3, newdata= ND.id, idVar = "ID_d", respVar = "cvd", timeVar = "Time", evTimeVar = "ttocvd", Thoriz= 26, Tstart=16)
+aucJM(MultJMFit3, newdata= ND.id, idVar = "ID_d", respVar = "cvd", timeVar = "Time", evTimeVar = "ttocvd", Thoriz= 26, Tstart=15)
 #0.8205
 aucJM(MultJMFit3, newdata= ND.id, idVar = "ID_d", respVar = "cvd", timeVar = "Time", evTimeVar = "ttocvd", Thoriz= 30, Tstart=20)
 #0.8701
