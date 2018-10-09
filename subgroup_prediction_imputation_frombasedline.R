@@ -101,8 +101,10 @@ Forms <- list("ln(SBP)" = "value", "ln(SBP)" = list(fixed = ~ 1, random = ~ 1,
                                                     indFixed = 2, indRandom = 2, name = "slope"))
 multJMFit2 <- update(multJMFit1, Formulas = Forms)
 
-aucJM(multJMFit2, newdata=ND, Tstart=16, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
+#aucJM(multJMFit2, newdata=ND, Tstart=16, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
 #0.8953 , 660 
+
+aucJM(multJMFit2, newdata=ND, Tstart=15, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
 #make Tstart time greater than the smallest repeated measurement time 
 aucJM(multJMFit2, newdata=ND, Tstart=20, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
 # 0.8954,574
