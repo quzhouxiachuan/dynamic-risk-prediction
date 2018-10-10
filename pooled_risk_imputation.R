@@ -100,10 +100,12 @@ aucJM(multJMFit2, newdata=ND, Tstart=20, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
 aucJM(multJMFit2, newdata=ND, Tstart=25, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
 #0.7716
 
-##aucJM for simple cox regression model 
-aucJM(MultJMFit3, newdata= ND.id, idVar = "ID_d", respVar = "cvd", timeVar = "Time", evTimeVar = "ttocvd", Thoriz= 25, Tstart=15)
-#0.8205
-aucJM(MultJMFit3, newdata= ND.id, idVar = "ID_d", respVar = "cvd", timeVar = "Time", evTimeVar = "ttocvd", Thoriz= 30, Tstart=20)
-#0.8701
-aucJM(MultJMFit3, newdata= ND.id, idVar = "ID_d", respVar = "cvd", timeVar = "Time", evTimeVar = "ttocvd", Thoriz= 35, Tstart=25)
-#0.7707
+Forms2 <- list( "ln(SBP)" = list(fixed = ~ 1, random = ~ 1,
+          indFixed = 2, indRandom = 2, name = "slope"))
+multJMFit3 <- update(multJMFit1, Formulas = Forms2)
+aucJM(multJMFit3, newdata=ND, Tstart=15, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
+# 0.8901 , 542 
+aucJM(multJMFit3, newdata=ND, Tstart=20, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
+# 0.9005 (480 subjects still at risk)
+aucJM(multJMFit3, newdata=ND, Tstart=25, Thoriz = NULL, Dt = 10, idVar = 'ID_d')
+# 0.7447 (236 subjects still at risk)
